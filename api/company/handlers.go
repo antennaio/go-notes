@@ -15,7 +15,7 @@ func (env *Env) getCompany(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-    company, err := env.db.GetCompany(id)
+	company, err := env.db.GetCompany(id)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return

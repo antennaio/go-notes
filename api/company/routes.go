@@ -6,11 +6,11 @@ import (
 )
 
 type DB struct {
-    *pg.DB
+	*pg.DB
 }
 
 type Env struct {
-    db Datastore
+	db Datastore
 }
 
 func Routes(pgDb *pg.DB) *chi.Mux {
@@ -23,4 +23,3 @@ func Routes(pgDb *pg.DB) *chi.Mux {
 
 	return router
 }
-

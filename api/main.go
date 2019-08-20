@@ -28,7 +28,7 @@ func Routes() *chi.Mux {
 		middleware.Recoverer,
 	)
 
-    db := db.Connection()
+	db := db.Connection()
 
 	router.Route("/v1", func(r chi.Router) {
 		r.Mount("/company", company.Routes(db))
