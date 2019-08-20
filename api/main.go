@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/render"
 
 	"github.com/antennaio/goapi/api/company"
+	"github.com/antennaio/goapi/lib/db"
 	"github.com/antennaio/goapi/lib/env"
 )
 
@@ -27,8 +28,10 @@ func Routes() *chi.Mux {
 		middleware.Recoverer,
 	)
 
+    db := db.Connection()
+
 	router.Route("/v1", func(r chi.Router) {
-		r.Mount("/company", company.Routes())
+		r.Mount("/company", company.Routes(db))
 	})
 
 	return router
