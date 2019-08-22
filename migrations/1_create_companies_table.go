@@ -11,7 +11,7 @@ func init() {
 		fmt.Println("creating table companies...")
 		_, err := db.Exec(`
 			CREATE TABLE companies (
-				id INTEGER PRIMARY KEY,
+				id SERIAL PRIMARY KEY,
 				slug VARCHAR,
 				name VARCHAR,
 				updated_at TIMESTAMP DEFAULT CURRENT_DATE
