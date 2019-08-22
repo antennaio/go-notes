@@ -24,7 +24,7 @@ func Routes() *chi.Mux {
 		render.SetContentType(render.ContentTypeJSON),
 		middleware.Logger,
 		middleware.DefaultCompress,
-		middleware.RedirectSlashes,
+		middleware.StripSlashes,
 		middleware.Recoverer,
 	)
 

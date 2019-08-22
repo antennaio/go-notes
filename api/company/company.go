@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gosimple/slug"
+	"github.com/go-ozzo/ozzo-validation"
 )
 
 type Company struct {
@@ -12,6 +13,12 @@ type Company struct {
 	Slug      string    `json:"slug"`
 	Name      string    `json:"name"`
 	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (c Company) Validate() error {
+	return validation.ValidateStruct(&c,
+		validation.Field(&c.Name, validation.Required, validation.Length(1, 50)),
+	)
 }
 
 func (c *Company) BeforeInsert(ctx context.Context) (context.Context, error) {

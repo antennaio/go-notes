@@ -14,7 +14,10 @@ func (env *Env) getCompanies(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
-	render.JSON(w, r, companies)
+	if err := render.RenderList(w, r, NewCompanyListResponse(companies)); err != nil {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
 }
 
 func (env *Env) getCompany(w http.ResponseWriter, r *http.Request) {
@@ -29,16 +32,27 @@ func (env *Env) getCompany(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, http.StatusText(http.StatusNotFound), http.StatusNotFound)
 		return
 	}
-	render.JSON(w, r, company)
+	if err := render.Render(w, r, NewCompanyResponse(company)); err != nil {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
 }
 
 func (env *Env) createCompany(w http.ResponseWriter, r *http.Request) {
-	name := r.FormValue("name")
+	data := &CompanyRequest{}
+	if err := render.Bind(r, data); err != nil {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
 
-	company, err := env.db.CreateCompany(name)
+	company := data.Company
+	company, err := env.db.CreateCompany(company)
 	if err != nil {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 		return
 	}
-	render.JSON(w, r, company)
+	if err := render.Render(w, r, NewCompanyResponse(company)); err != nil {
+		http.Error(w, http.StatusText(http.StatusBadRequest), http.StatusBadRequest)
+		return
+	}
 }

@@ -3,6 +3,8 @@ github.com/go-chi/chi v4.0.2+incompatible h1:maB6vn6FqCxrpz4FqWdh4+lwpyZIQS7YEAU
 github.com/go-chi/chi v4.0.2+incompatible/go.mod h1:eB3wogJHnLi3x/kFX2A+IbTBlXxmMeXJVKy9tTv1XzQ=
 github.com/go-chi/render v1.0.1 h1:4/5tis2cKaNdnv9zFLfXzcquC9HbeZgCnxGnKrltBS8=
 github.com/go-chi/render v1.0.1/go.mod h1:pq4Rr7HbnsdaeHagklXub+p6Wd16Af5l9koip1OvJns=
+github.com/go-ozzo/ozzo-validation v3.6.0+incompatible h1:msy24VGS42fKO9K1vLz82/GeYW1cILu7Nuuj1N3BBkE=
+github.com/go-ozzo/ozzo-validation v3.6.0+incompatible/go.mod h1:gsEKFIVnabGBt6mXmxK0MoFy+cZoTJY6mu5Ll3LVLBU=
 github.com/go-pg/migrations/v7 v7.1.2 h1:c4VzkiuLvv9cG0A4gl8O28xoUV82Da6WF4O3zQlj2cs=
 github.com/go-pg/migrations/v7 v7.1.2/go.mod h1:VRyKuFt8b0ja0nKHU2XF2vC235KI4PxlLLKZovz9A7g=
 github.com/go-pg/pg v8.0.5+incompatible h1:+USAV4GOW4mlX1tt1DsEQ1ZSqVkrkDlPPG+t4DqzpAA=
