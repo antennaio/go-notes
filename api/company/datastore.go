@@ -3,6 +3,7 @@ package company
 type Datastore interface {
 	GetCompanies() (*[]Company, error)
 	GetCompany(id int) (*Company, error)
+	CreateCompany(name string) (*Company, error)
 }
 
 func (db *DB) GetCompanies() (*[]Company, error) {
@@ -14,5 +15,11 @@ func (db *DB) GetCompanies() (*[]Company, error) {
 func (db *DB) GetCompany(id int) (*Company, error) {
 	company := &Company{Id: id}
 	err := db.Select(company)
+	return company, err
+}
+
+func (db *DB) CreateCompany(name string) (*Company, error) {
+	company := &Company{Name: name}
+	err := db.Insert(company)
 	return company, err
 }

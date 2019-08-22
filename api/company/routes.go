@@ -21,6 +21,7 @@ func Routes(pgDb *pg.DB) *chi.Mux {
 
 	router.Get("/", env.getCompanies)
 	router.Get("/{id}", env.getCompany)
+	router.Post("/", env.createCompany)
 
 	return router
 }
