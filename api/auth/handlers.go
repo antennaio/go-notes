@@ -46,8 +46,8 @@ func (env *Env) register(w http.ResponseWriter, r *http.Request) {
 
 	user := data.User
 
-	exists, _ := env.db.GetUserByEmail(user.Email)
-	if exists != nil {
+	_, expectedErr := env.db.GetUserByEmail(user.Email)
+	if expectedErr == nil {
 		render.Render(w, r, error.BadRequest(errors.New("User account already exists.")))
 		return
 	}
