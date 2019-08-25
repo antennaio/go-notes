@@ -1,6 +1,14 @@
 package company
 
-type Datastore interface {
+import (
+	"github.com/go-pg/pg/v9"
+)
+
+type DB struct {
+	*pg.DB
+}
+
+type CompanyDatastore interface {
 	GetCompanies() ([]*Company, error)
 	GetCompany(id int) (*Company, error)
 	CreateCompany(company *Company) (*Company, error)

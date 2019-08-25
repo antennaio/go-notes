@@ -1,23 +1,23 @@
-package company
+package auth
 
 import (
 	"github.com/go-chi/chi"
 	"github.com/go-pg/pg/v9"
+
+	"github.com/antennaio/goapi/api/user"
 )
 
 type Env struct {
-	db CompanyDatastore
+	db user.UserDatastore
 }
 
 func Routes(pgDb *pg.DB) *chi.Mux {
-	db := &DB{pgDb}
+	db := &user.DB{pgDb}
 	env := &Env{db}
 
 	router := chi.NewRouter()
-
-	router.Get("/", env.getCompanies)
-	router.Get("/{id}", env.getCompany)
-	router.Post("/", env.createCompany)
+	router.Post("/", env.login)
+	// router.Post("/register", env.register)
 
 	return router
 }

@@ -9,6 +9,7 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
 
+	"github.com/antennaio/goapi/api/auth"
 	"github.com/antennaio/goapi/api/company"
 	"github.com/antennaio/goapi/lib/db"
 	"github.com/antennaio/goapi/lib/env"
@@ -29,9 +30,18 @@ func Routes() *chi.Mux {
 	)
 
 	db := db.Connection()
+	tokenAuth := auth.TokenAuth()
 
-	router.Route("/v1", func(r chi.Router) {
-		r.Mount("/company", company.Routes(db))
+	// Public routes
+	router.Group(func(router chi.Router) {
+		router.Mount("/auth", auth.Routes(db))
+	})
+
+	// Protected routes
+	router.Group(func(router chi.Router) {
+		router.Use(tokenAuth.Verifier())
+		router.Use(tokenAuth.Authenticator())
+		router.Mount("/company", company.Routes(db))
 	})
 
 	return router
