@@ -16,7 +16,7 @@ func (env *Env) getCompanies(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := render.RenderList(w, r, NewCompanyListResponse(companies)); err != nil {
-		render.Render(w, r, error.BadRequest(err))
+		render.Render(w, r, error.InternalServerError(err))
 		return
 	}
 }
@@ -34,7 +34,7 @@ func (env *Env) getCompany(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := render.Render(w, r, NewCompanyResponse(company)); err != nil {
-		render.Render(w, r, error.BadRequest(err))
+		render.Render(w, r, error.InternalServerError(err))
 		return
 	}
 }
@@ -53,7 +53,7 @@ func (env *Env) createCompany(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err := render.Render(w, r, NewCompanyResponse(company)); err != nil {
-		render.Render(w, r, error.BadRequest(err))
+		render.Render(w, r, error.InternalServerError(err))
 		return
 	}
 }

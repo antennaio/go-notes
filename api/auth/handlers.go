@@ -32,7 +32,7 @@ func (env *Env) login(w http.ResponseWriter, r *http.Request) {
 	tokenAuth := TokenAuth()
 	token := tokenAuth.EncodeToken(user)
 	if err := render.Render(w, r, NewLoginResponse(token)); err != nil {
-		render.Render(w, r, error.BadRequest(err))
+		render.Render(w, r, error.InternalServerError(err))
 		return
 	}
 }
@@ -63,7 +63,7 @@ func (env *Env) register(w http.ResponseWriter, r *http.Request) {
 	tokenAuth := TokenAuth()
 	token := tokenAuth.EncodeToken(user)
 	if err := render.Render(w, r, NewLoginResponse(token)); err != nil {
-		render.Render(w, r, error.BadRequest(err))
+		render.Render(w, r, error.InternalServerError(err))
 		return
 	}
 }
