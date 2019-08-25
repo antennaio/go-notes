@@ -37,11 +37,13 @@ func Routes() *chi.Mux {
 		router.Mount("/auth", auth.Routes(db))
 	})
 
-	// Protected routes
-	router.Group(func(router chi.Router) {
-		router.Use(tokenAuth.Verifier())
-		router.Use(tokenAuth.Authenticator())
-		router.Mount("/company", company.Routes(db))
+	router.Route("/v1", func(router chi.Router) {
+		// Protected routes
+		router.Group(func(router chi.Router) {
+			router.Use(tokenAuth.Verifier())
+			router.Use(tokenAuth.Authenticator())
+			router.Mount("/company", company.Routes(db))
+		})
 	})
 
 	return router
