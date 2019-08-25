@@ -17,7 +17,7 @@ func Routes(pgDb *pg.DB) *chi.Mux {
 
 	router := chi.NewRouter()
 	router.Post("/", env.login)
-	// router.Post("/register", env.register)
+	router.Post("/register", env.register)
 
 	return router
 }
