@@ -8,7 +8,7 @@ type DB struct {
 	*pg.DB
 }
 
-type CompanyDatastore interface {
+type Datastore interface {
 	GetCompanies() ([]*Company, error)
 	GetCompany(id int) (*Company, error)
 	CreateCompany(company *Company) (*Company, error)
