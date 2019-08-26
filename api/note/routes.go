@@ -1,4 +1,4 @@
-package company
+package note
 
 import (
 	"github.com/go-chi/chi"
@@ -15,9 +15,9 @@ func Routes(pgDb *pg.DB) *chi.Mux {
 
 	router := chi.NewRouter()
 
-	router.Get("/", env.getCompanies)
-	router.Get("/{id}", env.getCompany)
-	router.Post("/", env.createCompany)
+	router.Get("/", env.getNotes)
+	router.Get("/{id}", env.getNote)
+	router.Post("/", env.createNote)
 
 	return router
 }

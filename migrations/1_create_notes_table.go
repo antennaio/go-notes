@@ -8,9 +8,9 @@ import (
 
 func init() {
 	migrations.MustRegisterTx(func(db migrations.DB) error {
-		fmt.Println("creating table companies...")
+		fmt.Println("creating table notes...")
 		_, err := db.Exec(`
-			CREATE TABLE companies (
+			CREATE TABLE notes (
 				id SERIAL PRIMARY KEY,
 				slug VARCHAR,
 				name VARCHAR,
@@ -19,8 +19,8 @@ func init() {
 		`)
 		return err
 	}, func(db migrations.DB) error {
-		fmt.Println("dropping table companies...")
-		_, err := db.Exec(`DROP TABLE companies`)
+		fmt.Println("dropping table notes...")
+		_, err := db.Exec(`DROP TABLE notes`)
 		return err
 	})
 }

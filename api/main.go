@@ -10,9 +10,9 @@ import (
 	"github.com/go-chi/render"
 
 	"github.com/antennaio/goapi/api/auth"
-	"github.com/antennaio/goapi/api/company"
 	"github.com/antennaio/goapi/lib/db"
 	"github.com/antennaio/goapi/lib/env"
+	"github.com/antennaio/goapi/api/note"
 )
 
 func init() {
@@ -42,7 +42,7 @@ func Routes() *chi.Mux {
 		router.Group(func(router chi.Router) {
 			router.Use(tokenAuth.Verifier())
 			router.Use(tokenAuth.Authenticator())
-			router.Mount("/company", company.Routes(db))
+			router.Mount("/note", note.Routes(db))
 		})
 	})
 
