@@ -13,7 +13,8 @@ func init() {
 			CREATE TABLE notes (
 				id SERIAL PRIMARY KEY,
 				slug VARCHAR,
-				name VARCHAR,
+				title VARCHAR,
+				content TEXT,
 				updated_at TIMESTAMP DEFAULT CURRENT_DATE
 			)
 		`)
