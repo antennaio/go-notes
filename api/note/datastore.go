@@ -12,6 +12,7 @@ type Datastore interface {
 	GetNotes() ([]*Note, error)
 	GetNote(id int) (*Note, error)
 	CreateNote(note *Note) (*Note, error)
+	DeleteNote(id int) error
 }
 
 func (db *DB) GetNotes() ([]*Note, error) {
@@ -29,4 +30,10 @@ func (db *DB) GetNote(id int) (*Note, error) {
 func (db *DB) CreateNote(note *Note) (*Note, error) {
 	err := db.Insert(note)
 	return note, err
+}
+
+func (db *DB) DeleteNote(id int) error {
+	note := &Note{Id: id}
+	err := db.Delete(note)
+	return err
 }
