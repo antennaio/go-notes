@@ -58,6 +58,38 @@ func (env *Env) createNote(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func (env *Env) updateNote(w http.ResponseWriter, r *http.Request) {
+	id, err := request.ParamInt(r, "id")
+	if err != nil {
+		render.Render(w, r, response.BadRequest(err))
+		return
+	}
+
+	_, err = env.db.GetNote(id)
+	if err != nil {
+		render.Render(w, r, response.NotFound)
+		return
+	}
+
+	data := &NoteRequest{}
+	if err := render.Bind(r, data); err != nil {
+		render.Render(w, r, response.UnprocessableEntity(err))
+		return
+	}
+
+	note := data.Note
+	note.Id = id
+	note, err = env.db.UpdateNote(note)
+	if err != nil {
+		render.Render(w, r, response.InternalServerError(err))
+		return
+	}
+	if err := render.Render(w, r, NewNoteResponse(note)); err != nil {
+		render.Render(w, r, response.InternalServerError(err))
+		return
+	}
+}
+
 func (env *Env) deleteNote(w http.ResponseWriter, r *http.Request) {
 	id, err := request.ParamInt(r, "id")
 	if err != nil {

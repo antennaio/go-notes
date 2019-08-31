@@ -18,6 +18,7 @@ func Routes(pgDb *pg.DB) *chi.Mux {
 	router.Get("/", env.getNotes)
 	router.Get("/{id}", env.getNote)
 	router.Post("/", env.createNote)
+	router.Put("/{id}", env.updateNote)
 	router.Delete("/{id}", env.deleteNote)
 
 	return router

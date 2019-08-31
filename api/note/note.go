@@ -30,6 +30,7 @@ func (c *Note) BeforeInsert(ctx context.Context) (context.Context, error) {
 }
 
 func (c *Note) BeforeUpdate(ctx context.Context) (context.Context, error) {
+	c.Slug = slug.Make(c.Title)
 	c.UpdatedAt = time.Now()
 	return ctx, nil
 }
