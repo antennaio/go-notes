@@ -11,7 +11,7 @@ import (
 	"github.com/go-chi/render"
 
 	"github.com/antennaio/goapi/api/user"
-	"github.com/antennaio/goapi/lib/error"
+	"github.com/antennaio/goapi/lib/response"
 )
 
 var auth *tokenAuth
@@ -36,12 +36,12 @@ func (a *tokenAuth) Authenticator() func(http.Handler) http.Handler {
 			token, _, err := jwtauth.FromContext(r.Context())
 
 			if err != nil {
-				render.Render(w, r, error.Unauthorized(errors.New("Invalid token.")))
+				render.Render(w, r, response.Unauthorized(errors.New("Invalid token.")))
 				return
 			}
 
 			if token == nil || !token.Valid {
-				render.Render(w, r, error.Unauthorized(errors.New("Invalid token.")))
+				render.Render(w, r, response.Unauthorized(errors.New("Invalid token.")))
 				return
 			}
 
