@@ -16,21 +16,21 @@ type Note struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-func (c Note) Validate() error {
-	return validation.ValidateStruct(&c,
-		validation.Field(&c.Title, validation.Required, validation.Length(1, 100)),
-		validation.Field(&c.Content, validation.Required),
+func (n Note) Validate() error {
+	return validation.ValidateStruct(&n,
+		validation.Field(&n.Title, validation.Required, validation.Length(1, 100)),
+		validation.Field(&n.Content, validation.Required),
 	)
 }
 
-func (c *Note) BeforeInsert(ctx context.Context) (context.Context, error) {
-	c.Slug = slug.Make(c.Title)
-	c.UpdatedAt = time.Now()
+func (n *Note) BeforeInsert(ctx context.Context) (context.Context, error) {
+	n.Slug = slug.Make(n.Title)
+	n.UpdatedAt = time.Now()
 	return ctx, nil
 }
 
-func (c *Note) BeforeUpdate(ctx context.Context) (context.Context, error) {
-	c.Slug = slug.Make(c.Title)
-	c.UpdatedAt = time.Now()
+func (n *Note) BeforeUpdate(ctx context.Context) (context.Context, error) {
+	n.Slug = slug.Make(n.Title)
+	n.UpdatedAt = time.Now()
 	return ctx, nil
 }
