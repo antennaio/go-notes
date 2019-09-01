@@ -17,7 +17,7 @@ func (env *Env) login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := env.db.GetUserByEmail(data.Credentials.Email)
+	user, err := env.db.GetByEmail(data.Credentials.Email)
 	if err != nil {
 		render.Render(w, r, response.Unauthorized(errors.New("Wrong credentials provided.")))
 		return
@@ -46,7 +46,7 @@ func (env *Env) register(w http.ResponseWriter, r *http.Request) {
 
 	user := data.User
 
-	_, expectedErr := env.db.GetUserByEmail(user.Email)
+	_, expectedErr := env.db.GetByEmail(user.Email)
 	if expectedErr == nil {
 		render.Render(w, r, response.BadRequest(errors.New("User account already exists.")))
 		return
@@ -54,7 +54,7 @@ func (env *Env) register(w http.ResponseWriter, r *http.Request) {
 
 	hash, _ := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
 	user.Password = string(hash)
-	user, err := env.db.CreateUser(user)
+	user, err := env.db.Create(user)
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
 		return

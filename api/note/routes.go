@@ -6,11 +6,11 @@ import (
 )
 
 type Middleware struct {
-	db Datastore
+	db Notes
 }
 
 type Env struct {
-	db Datastore
+	db Notes
 }
 
 func Routes(pgDb *pg.DB) *chi.Mux {

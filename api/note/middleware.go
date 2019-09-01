@@ -18,7 +18,7 @@ func (m *Middleware) NoteContext(next http.Handler) http.Handler {
 			return
 		}
 	
-		note, err := m.db.GetNote(id)
+		note, err := m.db.Get(id)
 		if err != nil {
 			render.Render(w, r, response.NotFound)
 			return

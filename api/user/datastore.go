@@ -5,21 +5,21 @@ import (
 )
 
 type DB struct {
-	*pg.DB
+	Pg *pg.DB
 }
 
-type Datastore interface {
-	GetUserByEmail(email string) (*User, error)
-	CreateUser(user *User) (*User, error)
+type Users interface {
+	GetByEmail(email string) (*User, error)
+	Create(user *User) (*User, error)
 }
 
-func (db *DB) GetUserByEmail(email string) (*User, error) {
+func (db *DB) GetByEmail(email string) (*User, error) {
 	user := new(User)
-	err := db.Model(user).Where("email = ?", email).Select()
+	err := db.Pg.Model(user).Where("email = ?", email).Select()
 	return user, err
 }
 
-func (db *DB) CreateUser(user *User) (*User, error) {
-	err := db.Insert(user)
+func (db *DB) Create(user *User) (*User, error) {
+	err := db.Pg.Insert(user)
 	return user, err
 }

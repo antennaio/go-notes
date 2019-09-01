@@ -6,11 +6,10 @@ import (
 	"github.com/go-chi/render"
 
 	"github.com/antennaio/goapi/lib/response"
-	"github.com/antennaio/goapi/lib/request"
 )
 
 func (env *Env) getNotes(w http.ResponseWriter, r *http.Request) {
-	notes, err := env.db.GetNotes()
+	notes, err := env.db.GetAll()
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
 		return
@@ -38,7 +37,7 @@ func (env *Env) createNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	note := data.Note
-	note, err := env.db.CreateNote(note)
+	note, err := env.db.Create(note)
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
 		return
@@ -50,8 +49,6 @@ func (env *Env) createNote(w http.ResponseWriter, r *http.Request) {
 }
 
 func (env *Env) updateNote(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value("id").(int)
-
 	data := &NoteRequest{}
 	if err := render.Bind(r, data); err != nil {
 		render.Render(w, r, response.UnprocessableEntity(err))
@@ -59,8 +56,8 @@ func (env *Env) updateNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	note := data.Note
-	note.Id = id
-	note, err := env.db.UpdateNote(note)
+	note.Id = r.Context().Value("id").(int)
+	note, err := env.db.Update(note)
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
 		return
@@ -72,13 +69,9 @@ func (env *Env) updateNote(w http.ResponseWriter, r *http.Request) {
 }
 
 func (env *Env) deleteNote(w http.ResponseWriter, r *http.Request) {
-	id, err := request.ParamInt(r, "id")
-	if err != nil {
-		render.Render(w, r, response.BadRequest(err))
-		return
-	}
+	id := r.Context().Value("id").(int)
 
-	if err := env.db.DeleteNote(id); err != nil {
+	if err := env.db.Delete(id); err != nil {
 		render.Render(w, r, response.NotFound)
 		return
 	}

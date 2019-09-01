@@ -8,7 +8,7 @@ import (
 )
 
 type Env struct {
-	db user.Datastore
+	db user.Users
 }
 
 func Routes(pgDb *pg.DB) *chi.Mux {
