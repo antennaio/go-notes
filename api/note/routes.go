@@ -3,11 +3,9 @@ package note
 import (
 	"github.com/go-chi/chi"
 	"github.com/go-pg/pg/v9"
-)
 
-type Middleware struct {
-	db Notes
-}
+	"github.com/antennaio/goapi/lib/middleware"
+)
 
 type Env struct {
 	db Notes
@@ -16,7 +14,6 @@ type Env struct {
 func Routes(pgDb *pg.DB) *chi.Mux {
 	db := &DB{pgDb}
 	env := &Env{db}
-	middleware := &Middleware{db}
 
 	router := chi.NewRouter()
 
@@ -24,7 +21,10 @@ func Routes(pgDb *pg.DB) *chi.Mux {
 	router.Post("/", env.createNote)
 
 	router.Route("/{id}", func(router chi.Router) {
-		router.Use(middleware.NoteContext)
+		noteContext := &NoteContext{db}
+
+		router.Use(middleware.Id)
+		router.Use(noteContext.Handler)
 		router.Get("/", env.getNote)
 		router.Put("/", env.updateNote)
 		router.Delete("/", env.deleteNote)
