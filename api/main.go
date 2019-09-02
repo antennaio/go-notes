@@ -10,9 +10,9 @@ import (
 	"github.com/go-chi/render"
 
 	"github.com/antennaio/goapi/api/auth"
+	"github.com/antennaio/goapi/api/note"
 	"github.com/antennaio/goapi/lib/db"
 	"github.com/antennaio/goapi/lib/env"
-	"github.com/antennaio/goapi/api/note"
 )
 
 func init() {
@@ -23,11 +23,15 @@ func Routes() *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(
 		render.SetContentType(render.ContentTypeJSON),
-		middleware.Logger,
 		middleware.DefaultCompress,
 		middleware.StripSlashes,
 		middleware.Recoverer,
 	)
+
+	log, ok := os.LookupEnv("LOG_REQUESTS")
+	if ok && log == "true" {
+		router.Use(middleware.Logger)
+	}
 
 	db := db.Connection()
 	tokenAuth := auth.TokenAuth()

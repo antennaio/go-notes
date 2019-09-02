@@ -32,7 +32,10 @@ func Connection() *pg.DB {
 		log.Panicf("Error: %s\n", err.Error())
 	}
 
-	db.AddQueryHook(dbLogger{})
+	log, ok := os.LookupEnv("LOG_QUERIES")
+	if ok && log == "true" {
+		db.AddQueryHook(dbLogger{})
+	}
 
 	return db
 }
