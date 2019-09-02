@@ -4,8 +4,8 @@ import (
 	"context"
 	"time"
 
-	"github.com/gosimple/slug"
 	"github.com/go-ozzo/ozzo-validation"
+	"github.com/gosimple/slug"
 )
 
 type Note struct {

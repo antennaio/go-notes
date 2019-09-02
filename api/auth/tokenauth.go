@@ -22,7 +22,7 @@ type tokenAuth struct {
 }
 
 func (a *tokenAuth) EncodeToken(user *user.User) string {
-	_, token, _ := a.jwtAuth.Encode(jwt.MapClaims{"id": user.Id,"email": user.Email})
+	_, token, _ := a.jwtAuth.Encode(jwt.MapClaims{"id": user.Id, "email": user.Email})
 	return token
 }
 

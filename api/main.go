@@ -57,7 +57,6 @@ func main() {
 	router := Routes()
 
 	port, ok := os.LookupEnv("PORT")
-
 	if !ok {
 		port = ":8080"
 	}
