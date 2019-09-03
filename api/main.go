@@ -9,10 +9,10 @@ import (
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
 
-	"github.com/antennaio/goapi/api/auth"
-	"github.com/antennaio/goapi/api/note"
-	"github.com/antennaio/goapi/lib/db"
-	"github.com/antennaio/goapi/lib/env"
+	"github.com/antennaio/go-notes/api/auth"
+	"github.com/antennaio/go-notes/api/note"
+	"github.com/antennaio/go-notes/lib/db"
+	"github.com/antennaio/go-notes/lib/env"
 )
 
 func init() {

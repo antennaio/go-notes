@@ -6,8 +6,8 @@ import (
 
 	"github.com/go-chi/render"
 
-	"github.com/antennaio/goapi/lib/request"
-	"github.com/antennaio/goapi/lib/response"
+	"github.com/antennaio/go-notes/lib/request"
+	"github.com/antennaio/go-notes/lib/response"
 )
 
 func Id(next http.Handler) http.Handler {

@@ -7,7 +7,7 @@ import (
 	"github.com/go-chi/render"
 	"golang.org/x/crypto/bcrypt"
 
-	"github.com/antennaio/goapi/lib/response"
+	"github.com/antennaio/go-notes/lib/response"
 )
 
 func (env *Env) login(w http.ResponseWriter, r *http.Request) {

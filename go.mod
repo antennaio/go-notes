@@ -1,4 +1,4 @@
-module github.com/antennaio/goapi
+module github.com/antennaio/go-notes
 
 go 1.12
 

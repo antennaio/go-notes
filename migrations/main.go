@@ -8,7 +8,7 @@ import (
 	"github.com/go-pg/migrations/v7"
 	"github.com/go-pg/pg/v9"
 
-	"github.com/antennaio/goapi/lib/env"
+	"github.com/antennaio/go-notes/lib/env"
 )
 
 const usageText = `This program runs command on the db. Supported commands are:

@@ -4,7 +4,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-pg/pg/v9"
 
-	"github.com/antennaio/goapi/api/user"
+	"github.com/antennaio/go-notes/api/user"
 )
 
 type Env struct {

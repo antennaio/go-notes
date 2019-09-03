@@ -4,7 +4,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/antennaio/goapi/api/user"
+	"github.com/antennaio/go-notes/api/user"
 )
 
 type LoginRequest struct {

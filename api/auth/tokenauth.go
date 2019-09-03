@@ -10,8 +10,8 @@ import (
 	"github.com/go-chi/jwtauth"
 	"github.com/go-chi/render"
 
-	"github.com/antennaio/goapi/api/user"
-	"github.com/antennaio/goapi/lib/response"
+	"github.com/antennaio/go-notes/api/user"
+	"github.com/antennaio/go-notes/lib/response"
 )
 
 var auth *tokenAuth

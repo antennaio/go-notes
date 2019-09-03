@@ -5,7 +5,7 @@ import (
 
 	"github.com/go-chi/render"
 
-	"github.com/antennaio/goapi/lib/response"
+	"github.com/antennaio/go-notes/lib/response"
 )
 
 func (env *Env) getNotes(w http.ResponseWriter, r *http.Request) {
