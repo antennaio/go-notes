@@ -15,7 +15,9 @@ func init() {
 				slug VARCHAR,
 				title VARCHAR,
 				content TEXT,
-				updated_at TIMESTAMP DEFAULT CURRENT_DATE
+				created_at TIMESTAMP DEFAULT CURRENT_DATE,
+				updated_at TIMESTAMP DEFAULT CURRENT_DATE,
+				deleted_at TIMESTAMP
 			)
 		`)
 		return err

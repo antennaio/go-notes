@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/go-ozzo/ozzo-validation"
+	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/gosimple/slug"
 )
 
@@ -13,7 +13,9 @@ type Note struct {
 	Slug      string    `json:"slug"`
 	Title     string    `json:"title"`
 	Content   string    `json:"content"`
+	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+	DeletedAt time.Time `json:"-" pg:",soft_delete"`
 }
 
 func (n Note) Validate() error {
@@ -25,6 +27,7 @@ func (n Note) Validate() error {
 
 func (n *Note) BeforeInsert(ctx context.Context) (context.Context, error) {
 	n.Slug = slug.Make(n.Title)
+	n.CreatedAt = time.Now()
 	n.UpdatedAt = time.Now()
 	return ctx, nil
 }
