@@ -9,8 +9,15 @@ type DB struct {
 }
 
 type Users interface {
+	Get(id int) (*User, error)
 	GetByEmail(email string) (*User, error)
 	Create(user *User) (*User, error)
+}
+
+func (db *DB) Get(id int) (*User, error) {
+	user := &User{Id: id}
+	err := db.Pg.Select(user)
+	return user, err
 }
 
 func (db *DB) GetByEmail(email string) (*User, error) {

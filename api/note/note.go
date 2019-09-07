@@ -10,6 +10,7 @@ import (
 
 type Note struct {
 	Id        int       `json:"id"`
+	UserId    int       `json:"user_id"`
 	Slug      string    `json:"slug"`
 	Title     string    `json:"title"`
 	Content   string    `json:"content"`

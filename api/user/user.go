@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"github.com/go-ozzo/ozzo-validation"
+	validation "github.com/go-ozzo/ozzo-validation"
 	"github.com/go-ozzo/ozzo-validation/is"
 )
 
@@ -14,6 +14,7 @@ type User struct {
 	LastName  string    `json:"last_name"`
 	Email     string    `json:"email"`
 	Password  string    `json:"password"`
+	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
@@ -27,6 +28,7 @@ func (u User) Validate() error {
 }
 
 func (u *User) BeforeInsert(ctx context.Context) (context.Context, error) {
+	u.CreatedAt = time.Now()
 	u.UpdatedAt = time.Now()
 	return ctx, nil
 }

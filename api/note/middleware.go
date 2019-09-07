@@ -6,6 +6,7 @@ import (
 
 	"github.com/go-chi/render"
 
+	"github.com/antennaio/go-notes/api/user"
 	"github.com/antennaio/go-notes/lib/response"
 )
 
@@ -16,8 +17,9 @@ type NoteContext struct {
 func (m *NoteContext) Handler(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		id := r.Context().Value("id").(int)
+		user := r.Context().Value("user").(*user.User)
 
-		note, err := m.db.Get(id)
+		note, err := m.db.GetForUser(id, user.Id)
 		if err != nil {
 			render.Render(w, r, response.NotFound)
 			return

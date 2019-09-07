@@ -11,6 +11,7 @@ import (
 
 	"github.com/antennaio/go-notes/api/auth"
 	"github.com/antennaio/go-notes/api/note"
+	"github.com/antennaio/go-notes/api/user"
 	"github.com/antennaio/go-notes/lib/db"
 	"github.com/antennaio/go-notes/lib/env"
 )
@@ -33,20 +34,24 @@ func Routes() *chi.Mux {
 		router.Use(middleware.Logger)
 	}
 
-	db := db.Connection()
-	tokenAuth := auth.TokenAuth()
+	pgDb := db.Connection()
 
 	// Public routes
 	router.Group(func(router chi.Router) {
-		router.Mount("/auth", auth.Routes(db))
+		router.Mount("/auth", auth.Routes(pgDb))
 	})
 
+	// Protected routes
 	router.Route("/v1", func(router chi.Router) {
-		// Protected routes
+		tokenAuth := auth.TokenAuth()
+		db := &user.DB{pgDb}
+		userContext := &auth.UserContext{db}
+
 		router.Group(func(router chi.Router) {
 			router.Use(tokenAuth.Verifier())
 			router.Use(tokenAuth.Authenticator())
-			router.Mount("/note", note.Routes(db))
+			router.Use(userContext.Handler)
+			router.Mount("/note", note.Routes(pgDb))
 		})
 	})
 

@@ -16,6 +16,7 @@ func init() {
 				last_name VARCHAR,
 				email VARCHAR UNIQUE,
 				password VARCHAR,
+				created_at TIMESTAMP DEFAULT CURRENT_DATE,
 				updated_at TIMESTAMP DEFAULT CURRENT_DATE
 			)
 		`)

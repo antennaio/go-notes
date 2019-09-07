@@ -12,6 +12,7 @@ func init() {
 		_, err := db.Exec(`
 			CREATE TABLE notes (
 				id SERIAL PRIMARY KEY,
+				user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
 				slug VARCHAR,
 				title VARCHAR,
 				content TEXT,

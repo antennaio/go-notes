@@ -5,11 +5,13 @@ import (
 
 	"github.com/go-chi/render"
 
+	"github.com/antennaio/go-notes/api/user"
 	"github.com/antennaio/go-notes/lib/response"
 )
 
 func (env *Env) getNotes(w http.ResponseWriter, r *http.Request) {
-	notes, err := env.db.GetAll()
+	user := r.Context().Value("user").(*user.User)
+	notes, err := env.db.GetAllForUser(user.Id)
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
 		return
@@ -36,7 +38,10 @@ func (env *Env) createNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	user := r.Context().Value("user").(*user.User)
+
 	note := data.Note
+	note.UserId = user.Id
 	note, err := env.db.Create(note)
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
