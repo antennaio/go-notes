@@ -62,8 +62,9 @@ func (env *Env) updateNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	note := data.Note
-	note.Id = r.Context().Value(middleware.IDContextKey{}).(int)
+	note := r.Context().Value(NoteContextKey{}).(*Note)
+	note.Title = data.Note.Title
+	note.Content = data.Note.Content
 	note, err := env.Ds.Update(note)
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
