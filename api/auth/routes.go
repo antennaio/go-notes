@@ -7,12 +7,14 @@ import (
 	"github.com/antennaio/go-notes/api/user"
 )
 
+// Env is used to inject a datastore into request handlers
 type Env struct {
 	Ds user.Users
 }
 
+// Routes sets up the router
 func Routes(pgDb *pg.DB) *chi.Mux {
-	ds := &user.Datastore{pgDb}
+	ds := &user.Datastore{Pg: pgDb}
 	env := &Env{ds}
 
 	router := chi.NewRouter()

@@ -5,12 +5,14 @@ import (
 
 	"github.com/go-chi/render"
 
+	"github.com/antennaio/go-notes/api/auth"
 	"github.com/antennaio/go-notes/api/user"
+	"github.com/antennaio/go-notes/lib/middleware"
 	"github.com/antennaio/go-notes/lib/response"
 )
 
 func (env *Env) getNotes(w http.ResponseWriter, r *http.Request) {
-	user := r.Context().Value("user").(*user.User)
+	user := r.Context().Value(auth.UserContextKey{}).(*user.User)
 	notes, err := env.Ds.GetAllForUser(user.Id)
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
@@ -23,7 +25,7 @@ func (env *Env) getNotes(w http.ResponseWriter, r *http.Request) {
 }
 
 func (env *Env) getNote(w http.ResponseWriter, r *http.Request) {
-	note := r.Context().Value("note").(*Note)
+	note := r.Context().Value(NoteContextKey{}).(*Note)
 
 	if err := render.Render(w, r, NewNoteResponse(note)); err != nil {
 		render.Render(w, r, response.InternalServerError(err))
@@ -38,7 +40,7 @@ func (env *Env) createNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user := r.Context().Value("user").(*user.User)
+	user := r.Context().Value(auth.UserContextKey{}).(*user.User)
 
 	note := data.Note
 	note.UserId = user.Id
@@ -61,7 +63,7 @@ func (env *Env) updateNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	note := data.Note
-	note.Id = r.Context().Value("id").(int)
+	note.Id = r.Context().Value(middleware.IDContextKey{}).(int)
 	note, err := env.Ds.Update(note)
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
@@ -74,7 +76,7 @@ func (env *Env) updateNote(w http.ResponseWriter, r *http.Request) {
 }
 
 func (env *Env) deleteNote(w http.ResponseWriter, r *http.Request) {
-	id := r.Context().Value("id").(int)
+	id := r.Context().Value(middleware.IDContextKey{}).(int)
 
 	if err := env.Ds.Delete(id); err != nil {
 		render.Render(w, r, response.NotFound)

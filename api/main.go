@@ -20,6 +20,7 @@ func init() {
 	env.LoadEnv()
 }
 
+// Routes sets up the router
 func Routes() *chi.Mux {
 	router := chi.NewRouter()
 	router.Use(
@@ -44,8 +45,8 @@ func Routes() *chi.Mux {
 	// Protected routes
 	router.Route("/v1", func(router chi.Router) {
 		tokenAuth := auth.TokenAuth()
-		ds := &user.Datastore{pgDb}
-		userContext := &auth.UserContext{ds}
+		ds := &user.Datastore{Pg: pgDb}
+		userContext := &auth.UserContext{Ds: ds}
 
 		router.Group(func(router chi.Router) {
 			router.Use(tokenAuth.Verifier())

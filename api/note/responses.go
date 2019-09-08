@@ -10,7 +10,7 @@ type NoteResponse struct {
 	*Note
 }
 
-// Pre-processing before a response is marshalled and sent across the wire
+// Render takes care of pre-processing before a response is marshalled and sent across the wire
 func (response *NoteResponse) Render(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }

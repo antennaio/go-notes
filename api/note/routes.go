@@ -7,13 +7,15 @@ import (
 	"github.com/antennaio/go-notes/lib/middleware"
 )
 
+// Env is used to inject a datastore into request handlers
 type Env struct {
 	Ds Notes
 }
 
+// Routes sets up the router
 func Routes(pgDb *pg.DB) *chi.Mux {
-	ds := &Datastore{pgDb}
-	env := &Env{ds}
+	ds := &Datastore{Pg: pgDb}
+	env := &Env{Ds: ds}
 
 	router := chi.NewRouter()
 
@@ -21,9 +23,9 @@ func Routes(pgDb *pg.DB) *chi.Mux {
 	router.Post("/", env.createNote)
 
 	router.Route("/{id}", func(router chi.Router) {
-		noteContext := &NoteContext{ds}
+		noteContext := &NoteContext{Ds: ds}
 
-		router.Use(middleware.Id)
+		router.Use(middleware.ID)
 		router.Use(noteContext.Handler)
 		router.Get("/", env.getNote)
 		router.Put("/", env.updateNote)
