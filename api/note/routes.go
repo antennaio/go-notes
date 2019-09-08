@@ -8,12 +8,12 @@ import (
 )
 
 type Env struct {
-	db Notes
+	Ds Notes
 }
 
 func Routes(pgDb *pg.DB) *chi.Mux {
-	db := &DB{pgDb}
-	env := &Env{db}
+	ds := &Datastore{pgDb}
+	env := &Env{ds}
 
 	router := chi.NewRouter()
 
@@ -21,7 +21,7 @@ func Routes(pgDb *pg.DB) *chi.Mux {
 	router.Post("/", env.createNote)
 
 	router.Route("/{id}", func(router chi.Router) {
-		noteContext := &NoteContext{db}
+		noteContext := &NoteContext{ds}
 
 		router.Use(middleware.Id)
 		router.Use(noteContext.Handler)

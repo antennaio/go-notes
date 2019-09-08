@@ -8,12 +8,12 @@ import (
 )
 
 type Env struct {
-	db user.Users
+	Ds user.Users
 }
 
 func Routes(pgDb *pg.DB) *chi.Mux {
-	db := &user.DB{pgDb}
-	env := &Env{db}
+	ds := &user.Datastore{pgDb}
+	env := &Env{ds}
 
 	router := chi.NewRouter()
 	router.Post("/", env.login)

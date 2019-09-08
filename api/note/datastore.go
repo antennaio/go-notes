@@ -4,10 +4,6 @@ import (
 	"github.com/go-pg/pg/v9"
 )
 
-type DB struct {
-	Pg *pg.DB
-}
-
 type Notes interface {
 	GetAll() ([]*Note, error)
 	GetAllForUser(userId int) ([]*Note, error)
@@ -18,47 +14,51 @@ type Notes interface {
 	Delete(id int) error
 }
 
-func (db *DB) GetAll() ([]*Note, error) {
+type Datastore struct {
+	Pg *pg.DB
+}
+
+func (ds *Datastore) GetAll() ([]*Note, error) {
 	var notes []*Note
-	err := db.Pg.Model(&notes).Select()
+	err := ds.Pg.Model(&notes).Select()
 	return notes, err
 }
 
-func (db *DB) GetAllForUser(userId int) ([]*Note, error) {
+func (ds *Datastore) GetAllForUser(userId int) ([]*Note, error) {
 	var notes []*Note
-	err := db.Pg.Model(&notes).
+	err := ds.Pg.Model(&notes).
 		Where("user_id = ?", userId).
 		Select()
 	return notes, err
 }
 
-func (db *DB) Get(id int) (*Note, error) {
+func (ds *Datastore) Get(id int) (*Note, error) {
 	note := &Note{Id: id}
-	err := db.Pg.Select(note)
+	err := ds.Pg.Select(note)
 	return note, err
 }
 
-func (db *DB) GetForUser(id int, userId int) (*Note, error) {
+func (ds *Datastore) GetForUser(id int, userId int) (*Note, error) {
 	note := new(Note)
-	err := db.Pg.Model(note).
+	err := ds.Pg.Model(note).
 		Where("id = ?", id).
 		Where("user_id = ?", userId).
 		Select()
 	return note, err
 }
 
-func (db *DB) Create(note *Note) (*Note, error) {
-	err := db.Pg.Insert(note)
+func (ds *Datastore) Create(note *Note) (*Note, error) {
+	err := ds.Pg.Insert(note)
 	return note, err
 }
 
-func (db *DB) Update(note *Note) (*Note, error) {
-	_, err := db.Pg.Model(note).WherePK().Update()
+func (ds *Datastore) Update(note *Note) (*Note, error) {
+	_, err := ds.Pg.Model(note).WherePK().Update()
 	return note, err
 }
 
-func (db *DB) Delete(id int) error {
+func (ds *Datastore) Delete(id int) error {
 	note := &Note{Id: id}
-	err := db.Pg.Delete(note)
+	err := ds.Pg.Delete(note)
 	return err
 }

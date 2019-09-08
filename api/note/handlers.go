@@ -11,7 +11,7 @@ import (
 
 func (env *Env) getNotes(w http.ResponseWriter, r *http.Request) {
 	user := r.Context().Value("user").(*user.User)
-	notes, err := env.db.GetAllForUser(user.Id)
+	notes, err := env.Ds.GetAllForUser(user.Id)
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
 		return
@@ -42,7 +42,7 @@ func (env *Env) createNote(w http.ResponseWriter, r *http.Request) {
 
 	note := data.Note
 	note.UserId = user.Id
-	note, err := env.db.Create(note)
+	note, err := env.Ds.Create(note)
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
 		return
@@ -62,7 +62,7 @@ func (env *Env) updateNote(w http.ResponseWriter, r *http.Request) {
 
 	note := data.Note
 	note.Id = r.Context().Value("id").(int)
-	note, err := env.db.Update(note)
+	note, err := env.Ds.Update(note)
 	if err != nil {
 		render.Render(w, r, response.InternalServerError(err))
 		return
@@ -76,7 +76,7 @@ func (env *Env) updateNote(w http.ResponseWriter, r *http.Request) {
 func (env *Env) deleteNote(w http.ResponseWriter, r *http.Request) {
 	id := r.Context().Value("id").(int)
 
-	if err := env.db.Delete(id); err != nil {
+	if err := env.Ds.Delete(id); err != nil {
 		render.Render(w, r, response.NotFound)
 		return
 	}

@@ -11,7 +11,7 @@ import (
 )
 
 type NoteContext struct {
-	db Notes
+	Ds Notes
 }
 
 func (m *NoteContext) Handler(next http.Handler) http.Handler {
@@ -19,7 +19,7 @@ func (m *NoteContext) Handler(next http.Handler) http.Handler {
 		id := r.Context().Value("id").(int)
 		user := r.Context().Value("user").(*user.User)
 
-		note, err := m.db.GetForUser(id, user.Id)
+		note, err := m.Ds.GetForUser(id, user.Id)
 		if err != nil {
 			render.Render(w, r, response.NotFound)
 			return

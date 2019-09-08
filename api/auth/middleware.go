@@ -12,7 +12,7 @@ import (
 )
 
 type UserContext struct {
-	Db user.Users
+	Ds user.Users
 }
 
 func (m *UserContext) Handler(next http.Handler) http.Handler {
@@ -20,7 +20,7 @@ func (m *UserContext) Handler(next http.Handler) http.Handler {
 		_, claims, _ := jwtauth.FromContext(r.Context())
 		id := int(claims["id"].(float64))
 
-		user, err := m.Db.Get(id)
+		user, err := m.Ds.Get(id)
 		if err != nil {
 			render.Render(w, r, response.InternalServerError(err))
 			return
