@@ -6,9 +6,9 @@ import (
 
 type Notes interface {
 	GetAll() ([]*Note, error)
-	GetAllForUser(userId int) ([]*Note, error)
+	GetAllForUser(userID int) ([]*Note, error)
 	Get(id int) (*Note, error)
-	GetForUser(id int, userId int) (*Note, error)
+	GetForUser(id int, userID int) (*Note, error)
 	Create(note *Note) (*Note, error)
 	Update(note *Note) (*Note, error)
 	Delete(id int) error
@@ -24,10 +24,10 @@ func (ds *Datastore) GetAll() ([]*Note, error) {
 	return notes, err
 }
 
-func (ds *Datastore) GetAllForUser(userId int) ([]*Note, error) {
+func (ds *Datastore) GetAllForUser(userID int) ([]*Note, error) {
 	var notes []*Note
 	err := ds.Pg.Model(&notes).
-		Where("user_id = ?", userId).
+		Where("user_id = ?", userID).
 		Select()
 	return notes, err
 }
@@ -38,11 +38,11 @@ func (ds *Datastore) Get(id int) (*Note, error) {
 	return note, err
 }
 
-func (ds *Datastore) GetForUser(id int, userId int) (*Note, error) {
+func (ds *Datastore) GetForUser(id int, userID int) (*Note, error) {
 	note := new(Note)
 	err := ds.Pg.Model(note).
 		Where("id = ?", id).
-		Where("user_id = ?", userId).
+		Where("user_id = ?", userID).
 		Select()
 	return note, err
 }
