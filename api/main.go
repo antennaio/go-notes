@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
+	"github.com/go-pg/pg/v9"
 
 	"github.com/antennaio/go-notes/api/auth"
 	"github.com/antennaio/go-notes/api/note"
@@ -20,8 +21,14 @@ func init() {
 	env.LoadEnv()
 }
 
-// Routes sets up the router
-func Routes() *chi.Mux {
+// App represents the application
+type App struct {
+	Router *chi.Mux
+	DB     *pg.DB
+}
+
+// Initialize sets up the database connection and router
+func (a *App) Initialize(dbName, dbUser, dpPassword string) {
 	router := chi.NewRouter()
 	router.Use(
 		render.SetContentType(render.ContentTypeJSON),
@@ -35,37 +42,46 @@ func Routes() *chi.Mux {
 		router.Use(middleware.Logger)
 	}
 
-	pgDb := db.Connection()
+	a.DB = db.Connection(dbName, dbUser, dpPassword)
 
 	// Public routes
 	router.Group(func(router chi.Router) {
-		router.Mount("/auth", auth.Routes(pgDb))
+		router.Mount("/auth", auth.Routes(a.DB))
 	})
 
 	// Protected routes
 	router.Route("/v1", func(router chi.Router) {
 		tokenAuth := auth.TokenAuth()
-		ds := &user.Datastore{Pg: pgDb}
+		ds := &user.Datastore{Pg: a.DB}
 		userContext := &auth.UserContext{Ds: ds}
 
 		router.Group(func(router chi.Router) {
 			router.Use(tokenAuth.Verifier())
 			router.Use(tokenAuth.Authenticator())
 			router.Use(userContext.Handler)
-			router.Mount("/note", note.Routes(pgDb))
+			router.Mount("/note", note.Routes(a.DB))
 		})
 	})
 
-	return router
+	a.Router = router
+}
+
+// Serve serves the app on the specified port
+func (a *App) Serve(port string) {
+	log.Fatal(http.ListenAndServe(port, a.Router))
 }
 
 func main() {
-	router := Routes()
+	app := App{}
+	app.Initialize(
+		os.Getenv("POSTGRES_DB_NAME"),
+		os.Getenv("POSTGRES_DB_USER"),
+		os.Getenv("POSTGRES_DB_PASSWORD"))
 
 	port, ok := os.LookupEnv("PORT")
 	if !ok {
 		port = ":8080"
 	}
 
-	log.Fatal(http.ListenAndServe(port, router))
+	app.Serve(port)
 }
