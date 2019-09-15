@@ -3,7 +3,6 @@ package db
 import (
 	"context"
 	"log"
-	"os"
 
 	"github.com/go-pg/pg/v9"
 )
@@ -20,11 +19,12 @@ func (d dbLogger) AfterQuery(c context.Context, q *pg.QueryEvent) error {
 	return nil
 }
 
-func Connection() *pg.DB {
+// Connection establishes a new database connection
+func Connection(dbName, dbUser, dbPassword string, logQueries bool) *pg.DB {
 	db := pg.Connect(&pg.Options{
-		Database: os.Getenv("POSTGRES_DB_NAME"),
-		User:     os.Getenv("POSTGRES_DB_USER"),
-		Password: os.Getenv("POSTGRES_DB_PASSWORD"),
+		Database: dbName,
+		User:     dbUser,
+		Password: dbPassword,
 	})
 
 	_, err := db.Exec("SELECT 1")
@@ -32,8 +32,7 @@ func Connection() *pg.DB {
 		log.Panicf("Error: %s\n", err.Error())
 	}
 
-	log, ok := os.LookupEnv("LOG_QUERIES")
-	if ok && log == "true" {
+	if logQueries {
 		db.AddQueryHook(dbLogger{})
 	}
 
