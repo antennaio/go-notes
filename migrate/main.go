@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/go-pg/migrations/v7"
 	"github.com/go-pg/pg/v9"
 
 	"github.com/antennaio/go-notes/lib/env"
+	runner "github.com/antennaio/go-notes/migrations"
 )
 
 const usageText = `This program runs command on the db. Supported commands are:
@@ -25,7 +25,7 @@ Usage:
 `
 
 func init() {
-	env.LoadEnv()
+	env.LoadEnv(".env")
 }
 
 func main() {
@@ -38,7 +38,7 @@ func main() {
 		Password: os.Getenv("POSTGRES_DB_PASSWORD"),
 	})
 
-	oldVersion, newVersion, err := migrations.Run(db, flag.Args()...)
+	oldVersion, newVersion, err := runner.Run(db, flag.Args()...)
 	if err != nil {
 		exitf(err.Error())
 	}

@@ -1,4 +1,4 @@
-package main
+package app
 
 import (
 	"log"
@@ -18,7 +18,7 @@ import (
 // App represents the application
 type App struct {
 	Router *chi.Mux
-	DB     *pg.DB
+	Pg     *pg.DB
 }
 
 // Initialize sets up the database connection and router
@@ -35,24 +35,24 @@ func (a *App) Initialize(dbName, dbUser, dpPassword string, logRequests, logQuer
 		router.Use(middleware.Logger)
 	}
 
-	a.DB = db.Connection(dbName, dbUser, dpPassword, logQueries)
+	a.Pg = db.Connection(dbName, dbUser, dpPassword, logQueries)
 
 	// Public routes
 	router.Group(func(router chi.Router) {
-		router.Mount("/auth", auth.Routes(a.DB))
+		router.Mount("/auth", auth.Routes(a.Pg))
 	})
 
 	// Protected routes
 	router.Route("/v1", func(router chi.Router) {
 		tokenAuth := auth.TokenAuth()
-		ds := &user.Datastore{Pg: a.DB}
+		ds := &user.Datastore{Pg: a.Pg}
 		userContext := &auth.UserContext{Ds: ds}
 
 		router.Group(func(router chi.Router) {
 			router.Use(tokenAuth.Verifier())
 			router.Use(tokenAuth.Authenticator())
 			router.Use(userContext.Handler)
-			router.Mount("/note", note.Routes(a.DB))
+			router.Mount("/note", note.Routes(a.Pg))
 		})
 	})
 

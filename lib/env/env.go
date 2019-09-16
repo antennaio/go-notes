@@ -9,9 +9,8 @@ import (
 )
 
 // LoadEnv loads environment variables from the .env file
-func LoadEnv() {
-	err := godotenv.Load()
-
+func LoadEnv(path string) {
+	err := godotenv.Load(path)
 	if err != nil {
 		log.Fatal("Error loading .env file")
 	}

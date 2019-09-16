@@ -1,16 +1,17 @@
 package main
 
 import (
+	"github.com/antennaio/go-notes/api/app"
 	"github.com/antennaio/go-notes/lib/env"
 )
 
 func init() {
-	env.LoadEnv()
+	env.LoadEnv(".env")
 }
 
 func main() {
-	app := App{}
-	app.Initialize(
+	a := app.App{}
+	a.Initialize(
 		env.Getenv("POSTGRES_DB_NAME"),
 		env.Getenv("POSTGRES_DB_USER"),
 		env.Getenv("POSTGRES_DB_PASSWORD"),
@@ -19,5 +20,5 @@ func main() {
 
 	port := env.GetenvWithFallback("PORT", ":8080")
 
-	app.Serve(port)
+	a.Serve(port)
 }

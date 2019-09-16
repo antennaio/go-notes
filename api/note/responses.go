@@ -15,11 +15,13 @@ func (response *NoteResponse) Render(w http.ResponseWriter, r *http.Request) err
 	return nil
 }
 
+// NewNoteResponse returns a new NoteResponse
 func NewNoteResponse(note *Note) *NoteResponse {
 	response := &NoteResponse{Note: note}
 	return response
 }
 
+// NewNoteListResponse returns a new NoteListResponse
 func NewNoteListResponse(notes []*Note) []render.Renderer {
 	list := []render.Renderer{}
 	for _, note := range notes {
