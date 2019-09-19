@@ -9,20 +9,19 @@ import (
 	"github.com/go-pg/pg/v9"
 )
 
+// Generator generates database records for testing purposes
 type Generator struct {
 	Pg *pg.DB
 }
 
 func (g *Generator) generateUser() (*user.User, string) {
-	ds := user.Datastore{Pg: g.Pg}
 	user := &user.User{
 		FirstName: "John",
 		LastName:  "Tester",
 		Email:     "john@tester.com",
 		Password:  "",
 	}
-	user, err := ds.Create(user)
-	if err != nil {
+	if err := g.Pg.Insert(user); err != nil {
 		handleError(err)
 	}
 
@@ -34,16 +33,14 @@ func (g *Generator) generateUser() (*user.User, string) {
 
 func (g *Generator) generateNotes(u *user.User, n int) []*note.Note {
 	notes := make([]*note.Note, n)
-	ds := note.Datastore{Pg: g.Pg}
 
-	for i := 0; i < n; i++ {
+	for i := 1; i <= n; i++ {
 		note := &note.Note{
 			UserId:  u.Id,
 			Title:   fmt.Sprintf("Title %d", i),
 			Content: fmt.Sprintf("Content %d", i),
 		}
-		note, err := ds.Create(note)
-		if err != nil {
+		if err := g.Pg.Insert(note); err != nil {
 			handleError(err)
 		}
 		notes = append(notes, note)
