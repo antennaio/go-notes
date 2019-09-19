@@ -2,7 +2,6 @@ package tests
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -12,6 +11,7 @@ import (
 	"github.com/antennaio/go-notes/api/note"
 	"github.com/antennaio/go-notes/api/user"
 	"github.com/antennaio/go-notes/lib/env"
+	"github.com/stretchr/testify/assert"
 )
 
 var a app.App
@@ -33,9 +33,7 @@ func TestNoResults(t *testing.T) {
 
 	verifyResponseCode(t, http.StatusOK, response.Code)
 
-	if body := strings.TrimSpace(response.Body.String()); body != "[]" {
-		t.Errorf("Expected an empty array, got %s", body)
-	}
+	assert.Equal(t, "[]", strings.TrimSpace(response.Body.String()))
 }
 
 func TestGetNotes(t *testing.T) {
@@ -48,16 +46,12 @@ func TestGetNotes(t *testing.T) {
 
 	verifyResponseCode(t, http.StatusOK, response.Code)
 
-	body, errRead := ioutil.ReadAll(response.Body)
-	handleError(errRead)
-
 	var notes []*note.Note
-	errJSON := json.Unmarshal(body, &notes)
-	handleError(errJSON)
-
-	if len(notes) != 3 {
-		t.Errorf("Expected 3 notes, got %v", len(notes))
+	if errJSON := json.Unmarshal([]byte(response.Body.String()), &notes); errJSON != nil {
+		t.Error(errJSON)
 	}
+
+	assert.Equal(t, 3, len(notes), "Expected 3 notes, got %v", len(notes))
 }
 
 func TestMain(m *testing.M) {

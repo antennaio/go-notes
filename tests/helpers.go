@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi"
+	"github.com/stretchr/testify/assert"
 )
 
 func recordResponse(router *chi.Mux, r *http.Request) *httptest.ResponseRecorder {
@@ -16,9 +17,7 @@ func recordResponse(router *chi.Mux, r *http.Request) *httptest.ResponseRecorder
 }
 
 func verifyResponseCode(t *testing.T, expected, actual int) {
-	if expected != actual {
-		t.Errorf("Expected response code %d, got %d\n", expected, actual)
-	}
+	assert.Equal(t, expected, actual, "Expected response code %d, got %d", expected, actual)
 }
 
 func handleError(err error) {
