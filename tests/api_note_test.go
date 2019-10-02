@@ -85,10 +85,7 @@ func TestCreateNote(t *testing.T) {
 
 	verifyResponseCode(t, http.StatusOK, response.Code)
 
-	count, err := a.Pg.Model((*note.Note)(nil)).Count()
-	if err != nil {
-		t.Error(err)
-	}
+	count := generator.countNotes()
 	assert.Equal(t, 1, count, "Expected 1 note, got %v", count)
 }
 
@@ -106,10 +103,7 @@ func TestDeleteNote(t *testing.T) {
 
 	verifyResponseCode(t, http.StatusOK, response.Code)
 
-	count, err := a.Pg.Model((*note.Note)(nil)).Count()
-	if err != nil {
-		t.Error(err)
-	}
+	count := generator.countNotes()
 	assert.Equal(t, 0, count, "Expected 0 notes, got %v", count)
 }
 

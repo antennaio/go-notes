@@ -49,6 +49,14 @@ func (g *Generator) generateNotes(u *user.User, n int) []*note.Note {
 	return notes
 }
 
+func (g *Generator) countNotes() int {
+	count, err := g.Pg.Model((*note.Note)(nil)).Count()
+	if err != nil {
+		handleError(err)
+	}
+	return count
+}
+
 func (g *Generator) truncateNotes() {
 	if _, err := g.Pg.Exec("TRUNCATE TABLE notes"); err != nil {
 		handleError(err)
