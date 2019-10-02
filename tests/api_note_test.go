@@ -1,6 +1,7 @@
 package tests
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"os"
@@ -20,14 +21,20 @@ var token string
 var generator *Generator
 
 func TestUnauthorized(t *testing.T) {
-	request, _ := http.NewRequest("GET", "/v1/note", nil)
+	request, errRequest := http.NewRequest("GET", "/v1/note", nil)
+	if errRequest != nil {
+		t.Error(errRequest)
+	}
 	response := recordResponse(a.Router, request)
 
 	verifyResponseCode(t, http.StatusUnauthorized, response.Code)
 }
 
 func TestNoResults(t *testing.T) {
-	request, _ := http.NewRequest("GET", "/v1/note", nil)
+	request, errRequest := http.NewRequest("GET", "/v1/note", nil)
+	if errRequest != nil {
+		t.Error(errRequest)
+	}
 	request.Header.Add("Authorization", "BEARER "+token)
 	response := recordResponse(a.Router, request)
 
@@ -40,7 +47,10 @@ func TestGetNotes(t *testing.T) {
 	generator.generateNotes(u, 3)
 	defer generator.truncateNotes()
 
-	request, _ := http.NewRequest("GET", "/v1/note", nil)
+	request, errRequest := http.NewRequest("GET", "/v1/note", nil)
+	if errRequest != nil {
+		t.Error(errRequest)
+	}
 	request.Header.Add("Authorization", "BEARER "+token)
 	response := recordResponse(a.Router, request)
 
@@ -52,6 +62,31 @@ func TestGetNotes(t *testing.T) {
 	}
 
 	assert.Equal(t, 3, len(notes), "Expected 3 notes, got %v", len(notes))
+}
+
+func TestCreateNote(t *testing.T) {
+	body, errBody := json.Marshal(map[string]string{
+		"title": "New note",
+		"content": "Content",
+	})
+	if errBody != nil {
+		t.Error(errBody)
+	}
+
+	request, errRequest := http.NewRequest("POST", "/v1/note", bytes.NewBuffer(body))
+	if errRequest != nil {
+		t.Error(errRequest)
+	}
+	request.Header.Add("Authorization", "BEARER "+token)
+	response := recordResponse(a.Router, request)
+
+	verifyResponseCode(t, http.StatusOK, response.Code)
+
+	count, err := a.Pg.Model((*note.Note)(nil)).Count()
+	if err != nil {
+		t.Error(err)
+	}
+	assert.Equal(t, 1, count, "Expected 1 note, got %v", count)
 }
 
 func TestMain(m *testing.M) {
