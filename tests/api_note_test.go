@@ -89,6 +89,29 @@ func TestCreateNote(t *testing.T) {
 	assert.Equal(t, 1, count, "Expected 1 note, got %v", count)
 }
 
+func TestUpdateNote(t *testing.T) {
+	notes := generator.generateNotes(u, 1)
+	defer generator.truncateNotes()
+
+	body, errBody := json.Marshal(map[string]string{
+		"title":   "Updated note",
+		"content": "Updated content",
+	})
+	if errBody != nil {
+		t.Error(errBody)
+	}
+
+	id := strconv.Itoa(notes[0].Id)
+	request, errRequest := http.NewRequest("PUT", "/v1/note/"+id, bytes.NewBuffer(body))
+	if errRequest != nil {
+		t.Error(errRequest)
+	}
+	request.Header.Add("Authorization", "BEARER "+token)
+	response := recordResponse(a.Router, request)
+
+	verifyResponseCode(t, http.StatusOK, response.Code)
+}
+
 func TestDeleteNote(t *testing.T) {
 	notes := generator.generateNotes(u, 1)
 	defer generator.truncateNotes()
