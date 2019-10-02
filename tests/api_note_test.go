@@ -89,6 +89,17 @@ func TestCreateNote(t *testing.T) {
 	assert.Equal(t, 1, count, "Expected 1 note, got %v", count)
 }
 
+func TestUpdateNonExistentNote(t *testing.T) {
+	request, errRequest := http.NewRequest("PUT", "/v1/note/999", nil)
+	if errRequest != nil {
+		t.Error(errRequest)
+	}
+	request.Header.Add("Authorization", "BEARER "+token)
+	response := recordResponse(a.Router, request)
+
+	verifyResponseCode(t, http.StatusNotFound, response.Code)
+}
+
 func TestUpdateNote(t *testing.T) {
 	notes := generator.generateNotes(u, 1)
 	defer generator.truncateNotes()
@@ -110,6 +121,17 @@ func TestUpdateNote(t *testing.T) {
 	response := recordResponse(a.Router, request)
 
 	verifyResponseCode(t, http.StatusOK, response.Code)
+}
+
+func TestDeleteNonExistentNote(t *testing.T) {
+	request, errRequest := http.NewRequest("DELETE", "/v1/note/999", nil)
+	if errRequest != nil {
+		t.Error(errRequest)
+	}
+	request.Header.Add("Authorization", "BEARER "+token)
+	response := recordResponse(a.Router, request)
+
+	verifyResponseCode(t, http.StatusNotFound, response.Code)
 }
 
 func TestDeleteNote(t *testing.T) {
