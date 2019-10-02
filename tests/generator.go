@@ -32,7 +32,7 @@ func (g *Generator) generateUser() (*user.User, string) {
 }
 
 func (g *Generator) generateNotes(u *user.User, n int) []*note.Note {
-	notes := make([]*note.Note, n)
+	notes := make([]*note.Note, 0, n)
 
 	for i := 1; i <= n; i++ {
 		note := &note.Note{
