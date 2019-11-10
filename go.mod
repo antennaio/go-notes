@@ -4,9 +4,10 @@ go 1.12
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20190424111038-f61b66f89f4a // indirect
+	github.com/cortesi/modd v0.0.0-20190816110347-45e41bb091af // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-chi/chi v4.0.2+incompatible
-	github.com/go-chi/jwtauth v4.0.0+incompatible
+	github.com/go-chi/jwtauth v4.0.3+incompatible
 	github.com/go-chi/render v1.0.1
 	github.com/go-ozzo/ozzo-validation v3.6.0+incompatible
 	github.com/go-pg/migrations/v7 v7.1.2
