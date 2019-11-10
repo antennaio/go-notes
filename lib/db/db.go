@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/go-pg/pg/v9"
@@ -20,8 +21,10 @@ func (d dbLogger) AfterQuery(c context.Context, q *pg.QueryEvent) error {
 }
 
 // Connection establishes a new database connection
-func Connection(dbName, dbUser, dbPassword string, logQueries bool) *pg.DB {
+func Connection(dbHost, dbPort, dbName, dbUser, dbPassword string, logQueries bool) *pg.DB {
 	db := pg.Connect(&pg.Options{
+		Network:  "tcp",
+		Addr:     fmt.Sprintf("%s:%s", dbHost, dbPort),
 		Database: dbName,
 		User:     dbUser,
 		Password: dbPassword,

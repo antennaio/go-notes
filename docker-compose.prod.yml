@@ -1,0 +1,17 @@
+version: '3'
+services:
+  api:
+    container_name: go_notes_production
+    image: go_notes_production:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports: 
+      - ${PORT}:${PORT}
+    restart: on-failure
+    depends_on:
+      - postgres
+    networks:
+      - nw
+    command:
+      ["./docker-entrypoint.sh", "postgres", "./server"]

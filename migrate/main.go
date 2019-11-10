@@ -33,6 +33,8 @@ func main() {
 	flag.Parse()
 
 	db := pg.Connect(&pg.Options{
+		Network:  "tcp",
+		Addr:     fmt.Sprintf("%s:%s", os.Getenv("POSTGRES_DB_HOST"), os.Getenv("POSTGRES_DB_PORT")),
 		Database: os.Getenv("POSTGRES_DB_NAME"),
 		User:     os.Getenv("POSTGRES_DB_USER"),
 		Password: os.Getenv("POSTGRES_DB_PASSWORD"),

@@ -22,7 +22,7 @@ type App struct {
 }
 
 // Initialize sets up the database connection and router
-func (a *App) Initialize(dbName, dbUser, dpPassword string, logRequests, logQueries bool) {
+func (a *App) Initialize(dbHost, dbPort, dbName, dbUser, dpPassword string, logRequests, logQueries bool) {
 	router := chi.NewRouter()
 	router.Use(
 		render.SetContentType(render.ContentTypeJSON),
@@ -35,7 +35,7 @@ func (a *App) Initialize(dbName, dbUser, dpPassword string, logRequests, logQuer
 		router.Use(middleware.Logger)
 	}
 
-	a.Pg = db.Connection(dbName, dbUser, dpPassword, logQueries)
+	a.Pg = db.Connection(dbHost, dbPort, dbName, dbUser, dpPassword, logQueries)
 
 	// Public routes
 	router.Group(func(router chi.Router) {

@@ -1,0 +1,20 @@
+version: '3'
+services:
+  api:
+    container_name: go_notes_development
+    image: go_notes_development:latest
+    build: .
+    ports: 
+      - ${PORT}:${PORT}
+    restart: on-failure
+    volumes:
+      - .:/src
+    depends_on:
+      - postgres
+    networks:
+      - nw
+    command:
+      ["./docker-entrypoint.sh", "postgres", "modd"]
+
+volumes:
+  api:
