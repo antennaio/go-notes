@@ -115,12 +115,12 @@ The project can be launched and deployed using Docker containers with the help o
 
 Build and start the project:
 
-`docker-compose -f docker-compose.yml -f docker-compose.dev.yml build`
+`docker-compose -f docker-compose.yml -f docker-compose.dev.yml build`  
 `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
 
 Migrate the database:
 
-`docker exec -it go_notes_development go run migrate/*.go init`
+`docker exec -it go_notes_development go run migrate/*.go init`  
 `docker exec -it go_notes_development go run migrate/*.go`
 
 Run tests:
@@ -131,10 +131,10 @@ Run tests:
 
 Build and start the project:
 
-`docker-compose -f docker-compose.yml -f docker-compose.prod.yml build`
+`docker-compose -f docker-compose.yml -f docker-compose.prod.yml build`  
 `docker-compose -f docker-compose.yml -f docker-compose.prod.yml up`
 
 Migrate the database:
 
-`docker exec -it go_notes_production ./migrate init`
+`docker exec -it go_notes_production ./migrate init`  
 `docker exec -it go_notes_production ./migrate`
