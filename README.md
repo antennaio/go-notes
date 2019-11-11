@@ -26,6 +26,42 @@ A sample API implemented on top of [go-chi](https://github.com/go-chi/chi) and [
 
 `go run api/*.go` (or `modd`)
 
+## Running tests
+
+`go test ./...`
+
+## Docker
+
+The project can be launched and deployed using Docker containers with the help of `docker-compose`. In development mode the source is mounted in a volume (the root project directory is mapped to `/src` within the container). The production container is optimised to be as small as possible and contains compiled binaries (in the `/srv` directory within the container) that allow to start the server / run migrations.
+
+### Development mode:
+
+Build and start the project:
+
+`docker-compose -f docker-compose.yml -f docker-compose.dev.yml build`  
+`docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
+
+Migrate the database:
+
+`docker exec -it go_notes_development go run migrate/*.go init`  
+`docker exec -it go_notes_development go run migrate/*.go`
+
+Run tests:
+
+`docker exec -it go_notes_development go test ./...`
+
+### Production mode:
+
+Build and start the project:
+
+`docker-compose -f docker-compose.yml -f docker-compose.prod.yml build`  
+`docker-compose -f docker-compose.yml -f docker-compose.prod.yml up`
+
+Migrate the database:
+
+`docker exec -it go_notes_production ./migrate init`  
+`docker exec -it go_notes_production ./migrate`
+
 ## Sample requests
 
 **Unauthorized request**
@@ -102,39 +138,3 @@ A sample API implemented on top of [go-chi](https://github.com/go-chi/chi) and [
   "status": "Success"
 }
 ```
-
-## Running tests
-
-`go test ./...`
-
-## Docker
-
-The project can be launched and deployed using Docker containers with the help of `docker-compose`. In development mode the source is mounted in a volume (the root project directory is mapped to `/src` within the container). The production container is optimised to be as small as possible and contains compiled binaries (in the `/srv` directory within the container) that allow to start the server / run migrations.
-
-### Development mode:
-
-Build and start the project:
-
-`docker-compose -f docker-compose.yml -f docker-compose.dev.yml build`  
-`docker-compose -f docker-compose.yml -f docker-compose.dev.yml up`
-
-Migrate the database:
-
-`docker exec -it go_notes_development go run migrate/*.go init`  
-`docker exec -it go_notes_development go run migrate/*.go`
-
-Run tests:
-
-`docker exec -it go_notes_development go test ./...`
-
-### Production mode:
-
-Build and start the project:
-
-`docker-compose -f docker-compose.yml -f docker-compose.prod.yml build`  
-`docker-compose -f docker-compose.yml -f docker-compose.prod.yml up`
-
-Migrate the database:
-
-`docker exec -it go_notes_production ./migrate init`  
-`docker exec -it go_notes_production ./migrate`
