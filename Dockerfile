@@ -1,4 +1,4 @@
-FROM golang:1.12
+FROM golang:1.14
 WORKDIR /src
 ENV GO111MODULE=on
 COPY go.mod go.sum ./

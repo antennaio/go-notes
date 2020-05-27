@@ -13,6 +13,8 @@ services:
       - postgres
     networks:
       - nw
+    environment:
+      - PGPASSWORD=${POSTGRES_DB_PASSWORD}
     command:
       ["./docker-entrypoint.sh", "postgres", "modd"]
 

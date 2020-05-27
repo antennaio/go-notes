@@ -26,7 +26,8 @@ func (a *App) Initialize(dbHost, dbPort, dbName, dbUser, dpPassword string, logR
 	router := chi.NewRouter()
 	router.Use(
 		render.SetContentType(render.ContentTypeJSON),
-		middleware.DefaultCompress,
+		middleware.SetHeader("Content-Type", "application/json"),
+		middleware.Compress(5),
 		middleware.StripSlashes,
 		middleware.Recoverer,
 	)
