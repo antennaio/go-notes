@@ -10,7 +10,7 @@ services:
       - POSTGRES_USER=${POSTGRES_DB_USER}
       - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWORD}
     ports:
-      - ${POSTGRES_DB_PORT}:${POSTGRES_DB_PORT}
+      - ${POSTGRES_DB_HOST_PORT}:${POSTGRES_DB_PORT}
     networks:
       - nw
 

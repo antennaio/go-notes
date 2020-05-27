@@ -34,7 +34,7 @@ A sample API implemented on top of [go-chi](https://github.com/go-chi/chi) and [
 
 The project can be launched and deployed using Docker containers with the help of `docker-compose`. In development mode the source is mounted in a volume (the root project directory is mapped to `/src` within the container). The production container is optimised to be as small as possible and contains compiled binaries (in the `/srv` directory within the container) that allow to start the server / run migrations.
 
-### Development mode:
+### Development mode
 
 Build and start the project:
 
@@ -50,7 +50,7 @@ Run tests:
 
 `docker exec -it go_notes_development go test ./...`
 
-### Production mode:
+### Production mode
 
 Build and start the project:
 
@@ -61,6 +61,10 @@ Migrate the database:
 
 `docker exec -it go_notes_production ./migrate init`  
 `docker exec -it go_notes_production ./migrate`
+
+### Connect to Postgres from the host machine
+
+You can access PostgreSQL database by connecting to localhost:5432 from the host machine (using Postico or other client). The port is mapped to 5432 by default. The port can be changed by updating the `POSTGRES_DB_HOST_PORT` env variable.
 
 ## Sample requests
 
